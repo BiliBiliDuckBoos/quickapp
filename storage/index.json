@@ -1,0 +1,26 @@
+{
+  "projects": [
+    {
+      "id": "1794579242791_FB",
+      "name": "FB",
+      "package": "com.duckbox.fb",
+      "appName": "FB",
+      "deviceType": "band10",
+      "designWidth": 212,
+      "createdAt": 1794579242792,
+      "updatedAt": 1794623035726,
+      "preview": "页面：index"
+    },
+    {
+      "id": "1794623055429_FB",
+      "name": "FB",
+      "package": "com.duckbox.fb",
+      "appName": "FBB",
+      "deviceType": "band9",
+      "designWidth": 192,
+      "createdAt": 1794623055429,
+      "updatedAt": 1794720754815,
+      "preview": "页面：index"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Duck Box · 小米手环快应用积木编程器</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=30">
+  <link rel="stylesheet" href="/static/css/theme.css?v=2">
+  <script src="/static/js/theme.js?v=1"></script>
+  <link rel="icon" type="image/png" href="/static/img/logo.png">
+</head>
+<body>
+  <!-- 左上角设置：主题颜色 -->
+  <button class="dbx-set-btn dbx-set-btn--home" type="button" title="设置：主题颜色" aria-label="设置">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+    </svg>
+    <span class="dbx-set-btn-label">设置</span>
+  </button>
+
+  <div class="home">
+    <div class="brand">
+      <img class="logo" src="/static/img/logo.png" alt="Duck Box">
+      <h1>Duck <span>Box</span></h1>
+    </div>
+    <p class="tagline">像搭积木一样，为小米手环 / Vela 设备制作快应用</p>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="btn-new">＋ 新建项目</button>
+      <button class="btn btn-ghost" id="btn-import">导入项目</button>
+      <button class="btn btn-tip" id="btn-tip">赞赏</button>
+      <button class="btn btn-ghost" id="btn-doc">开发文档</button>
+    </div>
+    <input type="file" id="file-import" accept=".json,application/json" hidden>
+
+    <!-- 赞赏弹窗 -->
+    <div class="modal-mask" id="tip-modal" style="display:none">
+      <div class="modal tip-modal">
+        <h2>打赏支持</h2>
+        <p class="tip-intro">喜欢 Duck Box 的话，请我喝杯咖啡吧 ☕</p>
+        <div class="tip-grid">
+          <div class="tip-cell">
+            <img class="tip-qr" src="/static/img/tip-wx.png" alt="微信赞赏">
+            <div class="tip-name">微信赞赏</div>
+          </div>
+          <div class="tip-cell">
+            <img class="tip-qr" src="/static/img/tip-zfb.jpg" alt="支付宝赞赏">
+            <div class="tip-name">支付宝赞赏</div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost slim" id="btn-tip-close">关 闭</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><b>1</b> 拖拽积木，拼出界面与逻辑</div>
+      <div class="step"><b>2</b> 右侧屏幕实时预览效果</div>
+      <div class="step"><b>3</b> 一键导出 src 源码，用 AIoT-IDE 打包到手环</div>
+    </div>
+
+    <div class="projects-wrap">
+      <div class="section-title">最近的项目</div>
+      <div class="projects" id="projects">
+        <div class="empty">还没有项目，点击「新建项目」开始创作吧</div>
+      </div>
+    </div>
+
+    <div class="home-foot">
+      Duck Box · 积木块编程 · 导出标准 Vela 快应用源码<br>
+      支持小米手环（Xiaomi Vela JS 应用）<br>
+      -仿Scratch样式-
+    </div>
+  </div>
+
+  <!-- 新建项目弹窗 -->
+  <div class="modal-mask" id="modal" style="display:none">
+    <div class="modal">
+      <h2>新建项目</h2>
+      <div class="field">
+        <label>项目名</label>
+        <input id="f-name" placeholder="例如：我的第一个应用">
+      </div>
+      <div class="field">
+        <label>包名 package（需与原生应用包名不同）</label>
+        <input id="f-package" value="com.duckbox.demo" placeholder="com.company.module">
+      </div>
+      <div class="field">
+        <label>应用名（6 个汉字以内，显示在手环桌面图标下）</label>
+        <input id="f-appname" value="小鸭子" placeholder="小鸭子">
+      </div>
+      <div class="hint">设备型号与设计宽度创建后可在编辑器预览旁随时切换；应用名与图标可在编辑器「应用信息」里修改（图标 128×128 及以内）。</div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost slim" id="btn-cancel">取消</button>
+        <button class="btn btn-primary slim" id="btn-create">开始创作 →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="/static/js/app.js?v=26"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "rpkPath": "D:\\app\\canlookcode\\canlookcode\\duckbox\\duckbox\\storage\\projects\\1794579242791_FB\\build-src\\dist\\com.duckbox.fb.debug.1.0.0.rpk",
+  "size": 31411,
+  "logs": [
+    "afterCompile: Generate protobuf json",
+    "afterCompile: compile lite card",
+    "afterCompile: Package the project into an RPK file",
+    "afterCompile: Generate diff json",
+    "afterCompile: Migrate temporary project",
+    "afterCompile: Check resource"
+  ],
+  "download": "/api/projects/1794579242791_FB/rpk"
+}

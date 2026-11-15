@@ -1,0 +1,7 @@
+{
+  "name": "FB",
+  "version": "1.0.0",
+  "devDependencies": {
+    "aiot-toolkit": "^2.0.5"
+  }
+}

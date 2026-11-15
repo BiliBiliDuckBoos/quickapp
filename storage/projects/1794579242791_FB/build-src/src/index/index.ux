@@ -1,0 +1,82 @@
+<template>
+  <div class="page" style="position: relative;" ontouchstart="dbx_on_touchstart" ontouchmove="dbx_on_touchmove" ontouchend="dbx_on_touchend">
+    <text class="dbxsprite dbxc-%E6%B5%8B%E8%AF%95t" style="position: absolute; left: 21px; top: 290px; width: 182px; height: 73px; z-index: 2;font-size: 40px; color: #333333; text-align: center; white-space: pre-wrap; line-height: 1.2;" show="{{测试t_show}}">{{测试t_text}}</text>
+    <image class="dbxsprite dbxc-%E8%A7%92%E8%89%B21" src="{{角色1_src}}" style="position: absolute; left: 6px; top: 44px; width: 191px; height: 204px; z-index: 1;" show="{{角色1_show}}"></image>
+  </div>
+</template>
+
+<style>
+  .page {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<script>
+import app from '@system.app'
+
+  export default {
+    private: {
+    v1: [],
+    测试t_x: 0,
+    测试t_y: 0,
+    测试t_rot: 0,
+    测试t_show: true,
+    dbx_touch_down: 'false',
+    dbx_touch_x: 0,
+    dbx_touch_y: 0,
+    _loop2_on: false,
+    测试t_src: '',
+    测试t_ci: 0,
+    测试t_text: "测试text",
+    角色1_x: 0,
+    角色1_y: 0,
+    角色1_rot: 0,
+    角色1_show: true,
+    角色1_src: "/assets/costume-1794585837537.png",
+    角色1_ci: 0,
+    },
+
+  dbx_on_touchstart(e) {
+    var t = (e && e.touches && e.touches[0]) ? e.touches[0] : null;
+    this.dbx_touch_down = "true";
+    if (t) { this.dbx_touch_x = Math.round(t.clientX); this.dbx_touch_y = Math.round(t.clientY); }
+  },
+
+  dbx_on_touchmove(e) {
+    var t = (e && e.touches && e.touches[0]) ? e.touches[0] : null;
+    if (t) { this.dbx_touch_x = Math.round(t.clientX); this.dbx_touch_y = Math.round(t.clientY); }
+  },
+
+  dbx_on_touchend(e) {
+    this.dbx_touch_down = "false";
+  },
+
+  onShow() {
+    var _l1 = (this.v1 || []).slice();
+      _l1.splice(Math.max(0, (Number(1) || 1) - 1), 0, 1);
+      this.v1 = _l1;
+      if (!this._loop2_on) {
+      this._loop2_on = true;
+      var _ft2 = this;
+      (function _loop2() {
+          if ((((Number(_ft2.dbx_touch_x) || 0) - 106) >= (((6) + (Number(_ft2.测试t_x) || 0)) - 91) && ((Number(_ft2.dbx_touch_x) || 0) - 106) <= ((((6) + (Number(_ft2.测试t_x) || 0)) - 91) + 182) && ((Number(_ft2.dbx_touch_y) || 0) - 260) >= (((67) + (Number(_ft2.测试t_y) || 0)) - 36.5) && ((Number(_ft2.dbx_touch_y) || 0) - 260) <= ((((67) + (Number(_ft2.测试t_y) || 0)) - 36.5) + 73))) {
+            _ft2.v1 = (_ft2.v1 || []).concat([((_ft2.v1 || [])[Math.max(0, (Number(1) || 1) - 1)]) + 1]);
+          }
+          if (((_ft2.v1 || []).indexOf(3) >= 0)) {
+            app.terminate();
+          }
+      setTimeout(_loop2, 32);
+      })();
+      }
+  },
+
+  onBackPress() {
+    app.terminate();
+    return true;
+  }
+  }
+</script>

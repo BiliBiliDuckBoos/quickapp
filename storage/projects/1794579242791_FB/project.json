@@ -1,0 +1,69 @@
+{
+  "xml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"vela_onready\" id=\"|aWU7ek^3r|fe[;JpcMX\" x=\"40\" y=\"40\"><statement name=\"DO\"><block type=\"sc_say\" id=\"LPf;@2tiN0Svd?`U$4zZ\"><value name=\"TEXT\"><shadow type=\"text\" id=\"!E#l_W-?w[%d,@+`i8BH\"><field name=\"TEXT\">你好，Duck Box！</field></shadow></value></block></statement></block></xml>",
+  "files": {
+    "src/app.ux": "<script>\n  /**\n   * 应用入口（由 Duck Box 自动生成）\n   */\n  export default {\n    onCreate() {},\n    onDestroy() {}\n  }\n</script>\n",
+    "src/common/style.css": "/* 公共样式（由 Duck Box 自动生成） */\n.duck-card {\n  background-color: #ffffff;\n  border-radius: 24px;\n}\n",
+    "src/i18n/defaults.json": "{}\n",
+    "src/manifest.json": "{\n  \"package\": \"com.duckbox.fb\",\n  \"name\": \"FB\",\n  \"versionName\": \"1.0.0\",\n  \"versionCode\": 1,\n  \"minPlatformVersion\": 1000,\n  \"icon\": \"/common/logo.png\",\n  \"deviceTypeList\": [\n    \"watch\"\n  ],\n  \"config\": {\n    \"logLevel\": \"log\",\n    \"designWidth\": 212\n  },\n  \"router\": {\n    \"entry\": \"index\",\n    \"pages\": {\n      \"index\": {\n        \"component\": \"index\",\n        \"path\": \"/index\"\n      }\n    }\n  },\n  \"features\": [\n    {\n      \"name\": \"system.app\"\n    }\n  ]\n}\n",
+    "src/index/index.ux": "<template>\n  <div class=\"page\" style=\"position: relative;\" ontouchstart=\"dbx_on_touchstart\" ontouchmove=\"dbx_on_touchmove\" ontouchend=\"dbx_on_touchend\">\n    <div class=\"d3\" show=\"{{dbx_say_show}}\">\n      <text style=\"font-size: 14px; color: #3b3b3b; text-align: center;\">{{dbx_say_text}}</text>\n    </div>\n    <text class=\"dbxsprite dbxc-%E6%B5%8B%E8%AF%95t\" style=\"position: absolute; left: 15px; top: 241px; width: 182px; height: 73px; z-index: 2;font-size: 40px; color: #333333; text-align: center; white-space: pre-wrap; line-height: 1.2;\" show=\"{{测试t_show}}\">{{测试t_text}}</text>\n    <image class=\"dbxsprite dbxc-%E8%A7%92%E8%89%B21\" src=\"{{角色1_src}}\" style=\"position: absolute; left: 9px; top: 40px; width: 191px; height: 204px; z-index: 1;\" show=\"{{角色1_show}}\"></image>\n  </div>\n</template>\n\n<style>\n  .page {\n    flex-direction: column;\n    width: 100%;\n    height: 100%;\n    align-items: center;\n    justify-content: center;\n  }\n\n  .d3 {\n    position: absolute; left: 8px; top: 34px; width: 196px; min-height: 24px; padding: 5px 8px; border-radius: 10px; background-color: #fdfbf5; border: 1px solid #d9d2c5; flex-direction: column; align-items: center; justify-content: center; z-index: 40;\n  }\n</style>\n\n<script>\nimport app from '@system.app'\n\n  export default {\n    private: {\n    dbx_say_text: '',\n    dbx_say_show: false,\n    v1: [],\n    测试t_x: 0,\n    测试t_y: 0,\n    测试t_rot: 0,\n    测试t_show: true,\n    dbx_touch_down: 'false',\n    dbx_touch_x: 0,\n    dbx_touch_y: 0,\n    _loop2_on: false,\n    测试t_src: '',\n    测试t_ci: 0,\n    测试t_text: \"测试text\",\n    角色1_x: 0,\n    角色1_y: 0,\n    角色1_rot: 0,\n    角色1_show: true,\n    角色1_src: \"/assets/costume-1794585837537.png\",\n    角色1_ci: 0,\n    },\n\n  onShow() {\n    this.dbx_say_text = String('你好，Duck Box！');\n      this.dbx_say_show = true;\n      var _l1 = (this.v1 || []).slice();\n      _l1.splice(Math.max(0, (Number(1) || 1) - 1), 0, 1);\n      this.v1 = _l1;\n      if (!this._loop2_on) {\n      this._loop2_on = true;\n      var _ft2 = this;\n      (function _loop2() {\n          if ((((Number(_ft2.dbx_touch_x) || 0) - 106) >= (((0) + (Number(_ft2.测试t_x) || 0)) - 91) && ((Number(_ft2.dbx_touch_x) || 0) - 106) <= ((((0) + (Number(_ft2.测试t_x) || 0)) - 91) + 182) && ((Number(_ft2.dbx_touch_y) || 0) - 260) >= (((18) + (Number(_ft2.测试t_y) || 0)) - 36.5) && ((Number(_ft2.dbx_touch_y) || 0) - 260) <= ((((18) + (Number(_ft2.测试t_y) || 0)) - 36.5) + 73))) {\n            _ft2.v1 = (_ft2.v1 || []).concat([((_ft2.v1 || [])[Math.max(0, (Number(1) || 1) - 1)]) + 1]);\n          }\n          if (((_ft2.v1 || []).indexOf(3) >= 0)) {\n            app.terminate();\n          }\n      setTimeout(_loop2, 32);\n      })();\n      }\n  },\n\n  dbx_on_touchstart(e) {\n    var t = (e && e.touches && e.touches[0]) ? e.touches[0] : null;\n    this.dbx_touch_down = \"true\";\n    if (t) { this.dbx_touch_x = Math.round(t.clientX); this.dbx_touch_y = Math.round(t.clientY); }\n  },\n\n  dbx_on_touchmove(e) {\n    var t = (e && e.touches && e.touches[0]) ? e.touches[0] : null;\n    if (t) { this.dbx_touch_x = Math.round(t.clientX); this.dbx_touch_y = Math.round(t.clientY); }\n  },\n\n  dbx_on_touchend(e) {\n    this.dbx_touch_down = \"false\";\n  },\n\n  onBackPress() {\n    app.terminate();\n    return true;\n  }\n  }\n</script>\n"
+  },
+  "meta": {
+    "id": "1794579242791_FB",
+    "name": "FB",
+    "package": "com.duckbox.fb",
+    "appName": "FB",
+    "deviceType": "band10",
+    "designWidth": 212,
+    "createdAt": 1794579242792,
+    "updatedAt": 1794623035726,
+    "preview": "页面：index"
+  },
+  "pages": [
+    {
+      "name": "index",
+      "title": "index",
+      "xml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"vela_onready\" id=\"|aWU7ek^3r|fe[;JpcMX\" x=\"40\" y=\"40\"><statement name=\"DO\"><block type=\"sc_say\" id=\"LPf;@2tiN0Svd?`U$4zZ\"><value name=\"TEXT\"><shadow type=\"text\" id=\"!E#l_W-?w[%d,@+`i8BH\"><field name=\"TEXT\">你好，Duck Box！</field></shadow></value></block></statement></block></xml>",
+      "backdrop": {
+        "costumes": [
+          {
+            "name": "背景1",
+            "image": "",
+            "xml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"vela_onready\" id=\"|aWU7ek^3r|fe[;JpcMX\" x=\"40\" y=\"40\"><statement name=\"DO\"><block type=\"sc_say\" id=\"LPf;@2tiN0Svd?`U$4zZ\"><value name=\"TEXT\"><shadow type=\"text\" id=\"!E#l_W-?w[%d,@+`i8BH\"><field name=\"TEXT\">你好，Duck Box！</field></shadow></value></block></statement></block></xml>"
+          }
+        ],
+        "index": 0,
+        "xml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"vela_onready\" id=\"|aWU7ek^3r|fe[;JpcMX\" x=\"40\" y=\"40\"><statement name=\"DO\"><block type=\"sc_say\" id=\"LPf;@2tiN0Svd?`U$4zZ\"><value name=\"TEXT\"><shadow type=\"text\" id=\"!E#l_W-?w[%d,@+`i8BH\"><field name=\"TEXT\">你好，Duck Box！</field></shadow></value></block></statement></block></xml>"
+      },
+      "sprites": [
+        {
+          "color": "#333333",
+          "h": 73,
+          "kind": "text",
+          "layer": 2,
+          "name": "测试t",
+          "size": 40,
+          "text": "测试text",
+          "visible": true,
+          "w": 182,
+          "x": 0,
+          "xml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><variables><variable type=\"list\" id=\"k/(`0j#j[*5Tmq%uWF]f\">1</variable></variables><block type=\"vela_onready\" id=\"v9@R,eFHZh%9W0n=hy,p\" x=\"-273\" y=\"-273\"><statement name=\"DO\"><block type=\"sc_list_insert\" id=\"t)%ay4AIBZO/LNu:(GOn\"><field name=\"LIST\" id=\"k/(`0j#j[*5Tmq%uWF]f\" variabletype=\"list\">1</field><value name=\"INDEX\"><block type=\"math_number\" id=\"i?b5NUZ`w({ytWgmyRl1\"><field name=\"NUM\">1</field></block></value><value name=\"VALUE\"><block type=\"math_number\" id=\"SumnQDbjz{uq8)#Ks4s7\"><field name=\"NUM\">1</field></block></value><next><block type=\"controls_forever\" id=\"EWHZWlOd`[:/6,xY`hNx\"><statement name=\"DO\"><block type=\"controls_if\" id=\"!NtjI+n`L:}B]n`qP3Fi\"><value name=\"IF0\"><block type=\"sc_touching\" id=\"hkCJtHuQK2EyV[c;Gu63\"><field name=\"SELF\">测试t</field><field name=\"OTHER\">__finger__</field></block></value><statement name=\"DO0\"><block type=\"sc_list_add\" id=\"-WTVs2aLVO18*Vn(An.$\"><field name=\"LIST\" id=\"k/(`0j#j[*5Tmq%uWF]f\" variabletype=\"list\">1</field><value name=\"VALUE\"><block type=\"math_arithmetic\" id=\"f@GWL*6W9]1OZH#P~I7^\"><field name=\"OP\">ADD</field><value name=\"A\"><block type=\"sc_list_item\" id=\"vd=_/jI|y5wJB0(!qZ$f\"><field name=\"LIST\" id=\"k/(`0j#j[*5Tmq%uWF]f\" variabletype=\"list\">1</field><value name=\"INDEX\"><block type=\"math_number\" id=\"lG#LT^gWh0lHxC5J{1jt\"><field name=\"NUM\">1</field></block></value></block></value><value name=\"B\"><block type=\"math_number\" id=\"o%J2Y[O1MlJ|(PM(GtG!\"><field name=\"NUM\">1</field></block></value></block></value></block></statement><next><block type=\"controls_if\" id=\"G8gER]wcpxzcm,nqqz{7\"><value name=\"IF0\"><block type=\"sc_list_contains\" id=\"(1t%AM]70+HWksH[J;?:\"><field name=\"LIST\" id=\"k/(`0j#j[*5Tmq%uWF]f\" variabletype=\"list\">1</field><value name=\"VALUE\"><block type=\"math_number\" id=\"cnU*|W-7nrx|e:nv3|QO\"><field name=\"NUM\">3</field></block></value></block></value><statement name=\"DO0\"><block type=\"vela_exit_app\" id=\"xiNQitItH|qWrXTO309*\"></block></statement></block></next></block></statement></block></next></block></statement></block></xml>",
+          "y": 18
+        },
+        {
+          "costume": "costume-1794585837537.png",
+          "costumes": [
+            "costume-1794585837537.png"
+          ],
+          "h": 204,
+          "layer": 1,
+          "name": "角色1",
+          "visible": true,
+          "w": 191,
+          "x": -1,
+          "xml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>",
+          "y": -118
+        }
+      ]
+    }
+  ]
+}

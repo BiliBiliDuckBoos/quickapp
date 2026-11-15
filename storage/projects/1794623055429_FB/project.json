@@ -1,0 +1,69 @@
+{
+  "xml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>",
+  "files": {
+    "src/app.ux": "<script>\n  /**\n   * 应用入口（由 Duck Box 自动生成）\n   */\n  export default {\n    onCreate() {},\n    onDestroy() {}\n  }\n</script>\n",
+    "src/common/style.css": "/* 公共样式（由 Duck Box 自动生成） */\n.duck-card {\n  background-color: #ffffff;\n  border-radius: 24px;\n}\n",
+    "src/i18n/defaults.json": "{}\n",
+    "src/manifest.json": "{\n  \"package\": \"com.duckbox.fb\",\n  \"name\": \"FBB\",\n  \"versionName\": \"1.0.0\",\n  \"versionCode\": 1,\n  \"minPlatformVersion\": 1000,\n  \"icon\": \"/common/logo.png\",\n  \"deviceTypeList\": [\n    \"watch\"\n  ],\n  \"config\": {\n    \"logLevel\": \"log\",\n    \"designWidth\": 192\n  },\n  \"router\": {\n    \"entry\": \"index\",\n    \"pages\": {\n      \"index\": {\n        \"component\": \"index\",\n        \"path\": \"/index\"\n      }\n    }\n  },\n  \"features\": [\n    {\n      \"name\": \"system.app\"\n    }\n  ]\n}\n",
+    "src/index/index.ux": "<template>\n  <div class=\"page\" style=\"position: relative;\">\n    <div class=\"d11\" show=\"{{dbx_say_show}}\">\n      <text style=\"font-size: 14px; color: #3b3b3b; text-align: center;\">{{dbx_say_text}}</text>\n    </div>\n    <text class=\"dbxsprite dbxc-%E6%96%87%E6%9C%AC\" style=\"transform: translate({{文本_x}}px, {{文本_y}}px) rotate({{文本_rot}}deg);position: absolute; left: 7px; top: 68px; width: 88px; height: 134px; z-index: 1;font-size: 48px; color: #333333; text-align: center; white-space: pre-wrap; line-height: 1.2;\" show=\"{{文本_show}}\" onclick=\"onSprite_文本\">{{文本_text}}</text>\n    <text class=\"dbxclone\" for=\"{{c in 文本_clones}}\" show=\"{{c.show}}\" style=\"position: absolute; left: {{c.l}}px; top: {{c.t}}px; font-size: {{c.size}}px; color: {{c.color}}; text-align: center; white-space: pre-wrap;\">{{c.text}}</text>\n  </div>\n</template>\n\n<style>\n  .page {\n    flex-direction: column;\n    width: 100%;\n    height: 100%;\n    align-items: center;\n    justify-content: center;\n  }\n\n  .d11 {\n    position: absolute; left: 8px; top: 34px; width: 176px; min-height: 24px; padding: 5px 8px; border-radius: 10px; background-color: #fdfbf5; border: 1px solid #d9d2c5; flex-direction: column; align-items: center; justify-content: center; z-index: 40;\n  }\n</style>\n\n<script>\nimport app from '@system.app'\n\n  export default {\n    private: {\n    v12: 0,\n    cs: [],\n    r: [],\n    _loop2_on: false,\n    dbx_say_text: '',\n    dbx_say_show: false,\n    文本_x: 0,\n    文本_y: 0,\n    文本_rot: 0,\n    文本_show: true,\n    文本_src: '',\n    文本_ci: 0,\n    文本_clones: [],\n    文本_clone_idx: -1,\n    dbx_clone_order: [],\n    文本_text: \"文本\",\n    },\n\n  onShow() {\n    this.v12 = 0;\n      var _l1 = (this.cs || []).slice();\n      _l1.splice(Math.max(0, (Number(1) || 1) - 1), 0, 1);\n      this.cs = _l1;\n      for (var count = 0; count < 555; count++) {\n        this.cs = (this.cs || []).concat([((this.cs || [])[Math.max(0, (Number(1) || 1) - 1)]) + 1]);\n      }\n      if (!this._loop2_on) {\n      this._loop2_on = true;\n      var _ft2 = this;\n      (function _loop2() {\n          if (_ft2.v12 == 3) {\n            app.terminate();\n          }\n      setTimeout(_loop2, 32);\n      })();\n      }\n      this.文本_clones = (this.文本_clones || []).concat([{\n        x: Number(this.文本_x) || 0, y: Number(this.文本_y) || 0,\n        cx: 96, cy: 245, w: 88, h: 134,\n        l: 52 + (Number(this.文本_x) || 0),\n        t: 178 + (Number(this.文本_y) || 0),\n        rot: Number(this.文本_rot) || 0, show: true, z: 2,\n        ci: Number(this.文本_ci) || 0,\n        src: this.文本_src || '', text: this.文本_text || '', isText: true,\n        size: 48, color: \"#333333\"\n      }]);\n      this.dbx_clone_order = (this.dbx_clone_order || []).concat(['文本']);\n      this.文本_clone_idx = this.文本_clones.length - 1;\n      if (this.onCloneStart_文本) this.onCloneStart_文本();\n      else if (this.onCloneStart) this.onCloneStart();\n  },\n\n  onSprite_文本() {\n    this.dbx_say_text = String('你好！');\n      this.dbx_say_show = true;\n      var _say3 = this;\n      setTimeout(function () { _say3.dbx_say_show = false; }, Math.round((Number(2) || 0) * 1000));\n      this.v12 = (Number(this.v12) || 0) + (1);\n  },\n\n  onCloneStart_文本() {\n    var _cdx4 = Number(this.文本_clone_idx);\n      var _rs5 = this;\n      (function _rp5(_rn5) {\n      if (!(_rn5 < (10))) return;\n          var _ci6 = _cdx4;\n          if (_rs5.文本_clones && _rs5.文本_clones[_ci6]) {\n            var _c = _rs5.文本_clones[_ci6];\n            _c.x = (20) - -45;\n            _c.l = (Number(_c.cx) || 0) + (Number(_c.x) || 0) - (Number(_c.w) || 0) / 2;\n            _c.t = (Number(_c.cy) || 0) + (Number(_c.y) || 0) - (Number(_c.h) || 0) / 2;\n            _rs5.文本_clones = _rs5.文本_clones.slice();\n          }\n          var _ci7 = _cdx4;\n          if (_rs5.文本_clones && _rs5.文本_clones[_ci7]) {\n            var _c = _rs5.文本_clones[_ci7];\n            _c.y = (0) - -110;\n            _c.l = (Number(_c.cx) || 0) + (Number(_c.x) || 0) - (Number(_c.w) || 0) / 2;\n            _c.t = (Number(_c.cy) || 0) + (Number(_c.y) || 0) - (Number(_c.h) || 0) / 2;\n            _rs5.文本_clones = _rs5.文本_clones.slice();\n          }\n          var _wt8 = _rs5;\n          setTimeout(function () {\n            var _ci9 = _cdx4;\n            if (_wt8.文本_clones && _wt8.文本_clones[_ci9]) {\n              var _c = _wt8.文本_clones[_ci9];\n              _c.x = (0) - -45;\n              _c.l = (Number(_c.cx) || 0) + (Number(_c.x) || 0) - (Number(_c.w) || 0) / 2;\n              _c.t = (Number(_c.cy) || 0) + (Number(_c.y) || 0) - (Number(_c.h) || 0) / 2;\n              _wt8.文本_clones = _wt8.文本_clones.slice();\n            }\n            var _ci10 = _cdx4;\n            if (_wt8.文本_clones && _wt8.文本_clones[_ci10]) {\n              var _c = _wt8.文本_clones[_ci10];\n              _c.y = (0) - -110;\n              _c.l = (Number(_c.cx) || 0) + (Number(_c.x) || 0) - (Number(_c.w) || 0) / 2;\n              _c.t = (Number(_c.cy) || 0) + (Number(_c.y) || 0) - (Number(_c.h) || 0) / 2;\n              _wt8.文本_clones = _wt8.文本_clones.slice();\n            }\n            setTimeout(function () { }, Math.round((Number(0.2) || 0) * 1000));\n            setTimeout(function () { }, Math.round((Number(0.2) || 0) * 1000));\n          }, Math.round((Number(0.2) || 0) * 1000));\n      setTimeout(function () { _rp5(_rn5 + 1); }, (Math.round((Number(0.2) || 0) * 1000) + Math.round((Number(0.2) || 0) * 1000)) + 16);\n      })(0);\n  },\n\n  onBackPress() {\n    app.terminate();\n    return true;\n  }\n  }\n</script>\n"
+  },
+  "meta": {
+    "id": "1794623055429_FB",
+    "name": "FB",
+    "package": "com.duckbox.fb",
+    "appName": "FBB",
+    "deviceType": "band9",
+    "designWidth": 192,
+    "createdAt": 1794623055429,
+    "updatedAt": 1794720754815,
+    "preview": "页面：index"
+  },
+  "pages": [
+    {
+      "name": "index",
+      "title": "index",
+      "xml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>",
+      "backdrop": {
+        "costumes": [
+          {
+            "name": "背景1",
+            "image": "",
+            "xml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>"
+          }
+        ],
+        "index": 0,
+        "xml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>"
+      },
+      "sprites": [
+        {
+          "color": "#333333",
+          "h": 134,
+          "kind": "text",
+          "layer": 1,
+          "name": "文本",
+          "size": 48,
+          "text": "文本",
+          "visible": true,
+          "w": 88,
+          "x": -45,
+          "xml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><variables><variable id=\"?l-n}t5~}/?n6Z-pM3sS\">12</variable><variable type=\"list\" id=\"{@rwyS*s|FkyALHT,tC)\">cs</variable></variables><block type=\"vela_onready\" id=\"mZMcTHuM1M_wH4eelts$\" x=\"-39\" y=\"-871\"><statement name=\"DO\"><block type=\"variables_set\" id=\"p:}!]g}|V+D#`Y4Wiab2\"><field name=\"VAR\" id=\"?l-n}t5~}/?n6Z-pM3sS\">12</field><value name=\"VALUE\"><block type=\"math_number\" id=\"2~iv;H=,$Wgh{wvNA:Pu\"><field name=\"NUM\">0</field></block></value><next><block type=\"sc_list_insert\" id=\"](i`vSF%0AbX0SsoDe|0\"><field name=\"LIST\" id=\"{@rwyS*s|FkyALHT,tC)\" variabletype=\"list\">cs</field><value name=\"INDEX\"><block type=\"math_number\" id=\"3W!d,GYU(S3@Er0a14F0\"><field name=\"NUM\">1</field></block></value><value name=\"VALUE\"><block type=\"math_number\" id=\"hPQm30U+::dKirCZz/lt\"><field name=\"NUM\">1</field></block></value><next><block type=\"controls_repeat_ext\" id=\"[4O:Ii$v[WA~H*,{fBRE\"><value name=\"TIMES\"><shadow type=\"math_number\" id=\",*)kBs7Py2!GqR%;R{jI\"><field name=\"NUM\">555</field></shadow></value><statement name=\"DO\"><block type=\"sc_list_add\" id=\"#Ug^BN~jmrH)9XmgU=v9\"><field name=\"LIST\" id=\"{@rwyS*s|FkyALHT,tC)\" variabletype=\"list\">cs</field><value name=\"VALUE\"><block type=\"math_arithmetic\" id=\"Y!E@e!:fr(JZAL3^3Z!e\"><field name=\"OP\">ADD</field><value name=\"A\"><block type=\"sc_list_item\" id=\"-!;1^F?*V.Uh}m4mGk[}\"><field name=\"LIST\" id=\"{@rwyS*s|FkyALHT,tC)\" variabletype=\"list\">cs</field><value name=\"INDEX\"><block type=\"math_number\" id=\"s]9[/aWTi{b[hH{PYvpt\"><field name=\"NUM\">1</field></block></value></block></value><value name=\"B\"><block type=\"math_number\" id=\"?h:+2OnQjztaw]xJ%#~p\"><field name=\"NUM\">1</field></block></value></block></value></block></statement><next><block type=\"controls_forever\" id=\"IS~jUjy~kZuc,f:f!59?\"><statement name=\"DO\"><block type=\"controls_if\" id=\"A$*$YA7?fOmVMPov0=b.\"><value name=\"IF0\"><block type=\"logic_compare\" id=\"AfB.;?@+6viq(j#ba@~9\"><field name=\"OP\">EQ</field><value name=\"A\"><block type=\"variables_get\" id=\"7}LvATe%qF!k?:12BjWw\"><field name=\"VAR\" id=\"?l-n}t5~}/?n6Z-pM3sS\">12</field></block></value><value name=\"B\"><block type=\"math_number\" id=\"7G-jhvYSYI.~xyN0ooYq\"><field name=\"NUM\">3</field></block></value></block></value><statement name=\"DO0\"><block type=\"vela_exit_app\" id=\"x{ajjj;.~tZSJNnu-7Tt\"></block></statement></block></statement></block></next></block></next></block></next></block></statement></block><block type=\"sc_when_sprite_clicked\" id=\"4G}SFP:90^n1^EBMkXJU\" x=\"-429\" y=\"-819\"><field name=\"TARGET\">文本</field><statement name=\"DO\"><block type=\"sc_say_secs\" id=\"kXw|?a#WmWMIffY#64#+\"><value name=\"TEXT\"><shadow type=\"text\" id=\"bFz$Inz[@Q:l+~x=7yfC\"><field name=\"TEXT\">你好！</field></shadow></value><value name=\"SECS\"><shadow type=\"math_number\" id=\"}xXLc7tsF[uB9oY4P}*u\"><field name=\"NUM\">2</field></shadow></value><next><block type=\"sc_var_change\" id=\"z9Ws]mDJvtSzBwm#g2#F\"><field name=\"VAR\" id=\"?l-n}t5~}/?n6Z-pM3sS\">12</field><value name=\"VALUE\"><block type=\"math_number\" id=\"wrYfE[%{~FV,|}y,4H,O\"><field name=\"NUM\">1</field></block></value></block></next></block></statement></block><block type=\"sc_when_clone_start\" id=\"-;dwAwTwx+cy~U?-eOzF\" x=\"-741\" y=\"-663\"><statement name=\"DO\"><block type=\"controls_repeat_ext\" id=\"G!$C4B*AFQKfHQ~?F2x=\"><value name=\"TIMES\"><shadow type=\"math_number\" id=\"%?_^@j)zu=q-DDM4TsQ.\"><field name=\"NUM\">10</field></shadow></value><statement name=\"DO\"><block type=\"sc_motion_goto\" id=\"2G8]DFd{6)M!6du77AZ:\"><field name=\"TARGET\">文本</field><value name=\"X\"><shadow type=\"math_number\" id=\"QSZGqccG]c[hL^9We7ow\"><field name=\"NUM\">20</field></shadow></value><value name=\"Y\"><shadow type=\"math_number\" id=\"Ouz|hRncJjOhAc9).XFu\"><field name=\"NUM\">0</field></shadow></value><next><block type=\"vela_wait\" id=\"oibwR|81sG~TgEJXQO2z\"><value name=\"SECS\"><shadow type=\"math_number\" id=\"Kc(4@X{|-eW*0LZlyvBz\"><field name=\"NUM\">0.2</field></shadow></value><next><block type=\"sc_motion_goto\" id=\"c)~=m%06Mg:+VdS/p*?B\"><field name=\"TARGET\">文本</field><value name=\"X\"><shadow type=\"math_number\" id=\"Z-.c({`$|4|J2~ecax3s\"><field name=\"NUM\">0</field></shadow></value><value name=\"Y\"><shadow type=\"math_number\" id=\"8ND#yf?o^I^|^)+{zlqJ\"><field name=\"NUM\">0</field></shadow></value><next><block type=\"vela_wait\" id=\"jtG_wJ:y=!j^x#F6B/#R\"><value name=\"SECS\"><shadow type=\"math_number\" id=\"TY;k~{Y8**F|i]sMnDMw\"><field name=\"NUM\">0.2</field></shadow></value></block></next></block></next></block></next></block></statement></block></statement></block><block type=\"vela_onready\" id=\"?Lff;2=}3dq}o%NBa!A]\" x=\"-299\" y=\"-559\"><statement name=\"DO\"><block type=\"sc_clone\" id=\"v.Mv?fQb/kF,VnCaY/YF\"><field name=\"TARGET\">文本</field></block></statement></block></xml>",
+          "y": -110
+        }
+      ]
+    }
+  ],
+  "globalVars": [
+    {
+      "name": "12",
+      "type": ""
+    },
+    {
+      "name": "cs",
+      "type": "list"
+    },
+    {
+      "name": "r",
+      "type": "list"
+    }
+  ]
+}

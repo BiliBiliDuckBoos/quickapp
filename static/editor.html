@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Duck Box · 编辑器</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=54">
+  <link rel="stylesheet" href="/static/css/theme.css?v=2">
+  <script src="/static/js/theme.js?v=1"></script>
+  <link rel="icon" type="image/png" href="/static/img/logo.png">
+</head>
+<body>
+  <div class="editor">
+    <div class="editor-topbar">
+      <!-- 左上角设置：主题颜色（与主菜单共用同一套弹窗） -->
+      <button class="dbx-set-btn dbx-set-btn--top" type="button" title="设置：主题颜色" aria-label="设置">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        <span class="dbx-set-btn-label">设置</span>
+      </button>
+      <button type="button" class="dbx-app-entry" id="btn-app-info"
+              title="修改快应用名称与图标（128×128 及以内）">
+        <img class="dbx-app-entry-icon" id="app-icon-img" src="/static/img/logo.png" alt="">
+        <span>应用信息</span>
+      </button>
+      <span class="e-title" id="e-title">加载中…</span>
+
+      <div class="topbar-group">
+        <label class="tb-label" for="pkg-display">包名</label>
+        <input id="pkg-display" class="pkg-input" spellcheck="false" title="应用包名（manifest.package）">
+      </div>
+
+      <select id="tpl-select" class="tpl-select" title="载入示例模板">
+        <option value="">载入示例模板…</option>
+        <option value="counter">计数器</option>
+        <option value="stopwatch">秒表</option>
+        <option value="guess">打招呼</option>
+      </select>
+
+      <span class="flex-spacer"></span>
+
+      <button class="tbtn" id="btn-undo" title="撤销 (Ctrl+Z)">撤销</button>
+      <button class="tbtn" id="btn-redo" title="重做 (Ctrl+Y)">重做</button>
+      <button class="tbtn" id="btn-tidy" title="整理积木布局">整理</button>
+      <button class="tbtn" id="btn-drawer" title="打开画板：编辑角色 / 背景的造型">🎨 画板</button>
+      <button class="tbtn" id="btn-save" title="保存项目 (Ctrl+S)">保存</button>
+      <button class="tbtn" id="btn-panel-toggle" title="收起 / 展开左侧预览面板">◧ 面板</button>
+      <button class="btn btn-ghost slim" id="btn-export-data" title="导出整个项目（积木、位置、代码、图片）">导出</button>
+      <button class="btn btn-primary slim" id="btn-export">导出 src</button>
+      <button class="btn btn-ghost slim" id="btn-back">主菜单</button>
+    </div>
+
+    <div class="pagebar">
+      <span class="pagebar-label">页面</span>
+      <div class="pagebar-tabs" id="pagebar-tabs"></div>
+      <button class="pagebar-add" id="btn-add-page" title="新建页面">＋ 新页面</button>
+      <span class="pagebar-tip">双击标签可重命名</span>
+    </div>
+
+    <!-- 积木搜索：放在积木工具箱（类型）的上方 -->
+    <div class="toolbox-search" id="block-search">
+      <input id="block-search-input" class="toolbox-search-input" type="text"
+             placeholder="搜索积木" autocomplete="off"
+             title="输入关键词搜索积木，点结果直接放到画布">
+      <div class="toolbox-search-results" id="block-search-results" style="display:none"></div>
+    </div>
+
+    <div class="editor-body">
+      <div class="workspace" id="blocklyDiv"></div>
+
+      <!-- 画板栏（默认隐藏：编辑造型时显示，占满工作区位置） -->
+      <div class="drawer-panel" id="drawer-panel" style="display:none">
+        <div class="drawer-head">
+          <div class="drawer-title-group">
+            <span class="drawer-title" id="drawer-title">画板</span>
+            <span class="drawer-sub" id="drawer-sub">点角色 / 背景的右键菜单 → 编辑造型 进入这里</span>
+          </div>
+          <div class="drawer-actions">
+            <button class="btn btn-ghost slim" id="btn-drawer-close" type="button">返回积木</button>
+          </div>
+        </div>
+
+        <div class="drawer-body" id="drawer-body">
+          <div class="drawer-empty" id="drawer-empty">
+            <div class="drawer-empty-icon">🎨</div>
+            <div class="drawer-empty-text">
+              <strong>画板</strong>
+              <p>在这里绘制角色或背景的造型。</p>
+              <p>进入方式：</p>
+              <ul>
+                <li>底部角色栏 → 右键角色卡片 → <em>编辑造型</em></li>
+                <li>底部角色栏 → 切到「背景」标签 → 右键背景卡片 → <em>编辑造型</em></li>
+                <li>点顶部 <em>🎨 画板</em> 按钮打开画板</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="costume-editor scratch" id="ce-panel" style="display:none">
+            <div class="ce-layout">
+              <!-- 左侧：造型列表（Scratch 风格竖排） -->
+              <aside class="ce-side">
+                <div class="ce-side-head">
+                  <span id="ce-target-hint">造型</span>
+                </div>
+                <div class="ce-costumes-chips" id="ce-costumes"></div>
+                <div class="ce-side-actions">
+                  <button class="ce-add-btn round" id="btn-ce-new-paint" type="button" title="导入图片作为新造型">
+                    <span class="ce-add-ico">＋</span><span>导入</span>
+                  </button>
+                  <button class="ce-add-btn round" id="btn-ce-new-blank" type="button" title="清空画布，绘制新造型">
+                    <span class="ce-add-ico">🖌</span><span>绘制</span>
+                  </button>
+                </div>
+              </aside>
+
+              <!-- 右侧：画布主体 -->
+              <div class="ce-main">
+                <!-- 顶栏：撤销 / 重做 / 清空 / 保存 -->
+                <div class="ce-topbar">
+                  <div class="ce-topbar-group">
+                    <button class="ce-tb-btn" id="btn-ce-undo" type="button" title="撤销 (Ctrl+Z)">
+                      <svg viewBox="0 0 24 24"><path d="M8 5L3 10l5 5M3 10h11a6 6 0 016 6v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button class="ce-tb-btn" id="btn-ce-redo" type="button" title="重做 (Ctrl+Y)">
+                      <svg viewBox="0 0 24 24"><path d="M16 5l5 5-5 5M21 10H10a6 6 0 00-6 6v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                  </div>
+                  <span class="flex-spacer"></span>
+                  <div class="ce-topbar-group">
+                    <button class="ce-tb-btn" id="btn-ce-clear" type="button" title="清空画布">
+                      <svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2m-9 0l1 13h10l1-13" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button class="btn btn-primary slim" id="btn-ce-save" type="button">保存到造型</button>
+                  </div>
+                </div>
+
+                <!-- 画布信息条：分辨率 / 图片格式 / 屏幕预览框 -->
+                <div class="ce-meta">
+                  <div class="ce-meta-group">
+                    <span class="ce-meta-label">画布</span>
+                    <input id="ce-canvas-w" class="ce-meta-num" type="number" min="8" max="2048" value="480" title="画布宽度（像素）">
+                    <span class="ce-meta-x">×</span>
+                    <input id="ce-canvas-h" class="ce-meta-num" type="number" min="8" max="2048" value="480" title="画布高度（像素）">
+                    <span class="ce-meta-unit">px</span>
+                    <button id="btn-ce-screen-size" class="ce-meta-btn" type="button" title="把画布设为当前设备屏幕尺寸">屏幕尺寸</button>
+                  </div>
+                  <span class="flex-spacer"></span>
+                  <div class="ce-meta-group">
+                    <span class="ce-meta-label">格式</span>
+                    <select id="ce-format" class="ce-meta-select" title="PNG 支持透明背景；JPG 不支持透明，文件更小">
+                      <option value="png">PNG（透明）</option>
+                      <option value="jpg">JPG（无透明）</option>
+                    </select>
+                    <label class="ce-meta-quality" id="ce-quality-wrap" title="JPG 质量，越低文件越小">
+                      <span>质量</span>
+                      <input id="ce-quality" class="ce-meta-num" type="number" min="30" max="100" step="1" value="72">
+                      <span>%</span>
+                    </label>
+                    <button id="btn-ce-screen-frame" class="ce-meta-btn active" type="button" title="显示 / 隐藏当前屏幕大小预览框">屏幕框</button>
+                  </div>
+                </div>
+
+                <!-- 画布行：左边竖排工具条 + 中间画布（右下角缩放） -->
+                <div class="ce-stage-row">
+                  <div class="ce-tools" id="ce-tools">
+                    <button class="ce-tool-btn active" data-tool="brush" type="button" title="画笔 (B)">
+                      <svg viewBox="0 0 24 24"><path d="M17.5 3.5l3 3-9.5 9.5H8v-3z" fill="currentColor"/><path d="M5 21c1-2 3-2 4-3l-2-2c-1 1-1 3-2 5z" fill="currentColor"/></svg>
+                    </button>
+                    <button class="ce-tool-btn" data-tool="eraser" type="button" title="橡皮 (E)">
+                      <svg viewBox="0 0 24 24"><path d="M15 4l5 5-9 9H6l-3-3 12-11z" fill="currentColor"/><path d="M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                    <button class="ce-tool-btn" data-tool="fill" type="button" title="填充 (F)">
+                      <svg viewBox="0 0 24 24"><path d="M5 12l7-7 7 7-7 7z" fill="currentColor"/><path d="M19 15s2 2.2 2 3.5A2 2 0 0117 18.5c0-1.3 2-3.5 2-3.5z" fill="currentColor"/></svg>
+                    </button>
+                    <button class="ce-tool-btn" data-tool="line" type="button" title="直线 (L)">
+                      <svg viewBox="0 0 24 24"><path d="M5 19L19 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+                    </button>
+                    <button class="ce-tool-btn" data-tool="rect" type="button" title="矩形 (R)">
+                      <svg viewBox="0 0 24 24"><rect x="4.5" y="6" width="15" height="12" rx="1" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                    </button>
+                    <button class="ce-tool-btn" data-tool="ellipse" type="button" title="椭圆 (O)">
+                      <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="6.5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                    </button>
+                    <button class="ce-tool-btn" data-tool="text" type="button" title="文字 (T)">
+                      <svg viewBox="0 0 24 24"><path d="M5 5h14M12 5v14M9 19h6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+                    </button>
+                    <button class="ce-tool-btn" data-tool="select" type="button" title="选择 (V)">
+                      <svg viewBox="0 0 24 24"><path d="M6 3l12 8-5 1.5L10 19z" fill="currentColor"/></svg>
+                    </button>
+                  </div>
+
+                  <div class="ce-canvas-wrap">
+                    <div class="ce-canvas-stage png" id="ce-canvas-stage">
+                      <canvas id="ce-canvas" width="480" height="480"></canvas>
+                      <!-- 当前设备屏幕大小预览框（画布坐标，可开关） -->
+                      <div class="ce-screen-frame" id="ce-screen-frame" style="display:none">
+                        <span class="ce-screen-frame-label" id="ce-screen-frame-label">屏幕</span>
+                      </div>
+                      <!-- 选择工具的选区 / 手柄层（不参与保存） -->
+                      <canvas id="ce-sel-overlay"></canvas>
+                    </div>
+                    <!-- Scratch 风格右下角缩放 -->
+                    <div class="ce-zoom-panel">
+                      <button class="ce-zoom-btn" id="btn-ce-zoom-in" type="button" title="放大">＋</button>
+                      <button class="ce-zoom-btn" id="btn-ce-zoom-out" type="button" title="缩小">－</button>
+                      <button class="ce-zoom-btn" id="btn-ce-zoom-reset" type="button" title="重置 =1">1:1</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 底栏：颜色 + 粗细（Scratch 在底部） -->
+                <div class="ce-bottombar">
+                  <div class="ce-color-pair">
+                    <input type="color" id="ce-color" value="#ff9f1a" title="颜色" class="ce-color-picker">
+                    <button class="ce-tool-btn swatch" id="btn-ce-fg" type="button" title="前景色"></button>
+                    <button class="ce-tool-btn swatch" id="btn-ce-bg" type="button" title="背景色" style="background:#ffffff"></button>
+                  </div>
+                  <div class="ce-size-wrap">
+                    <span class="ce-size-label">粗细</span>
+                    <input type="range" id="ce-size" min="1" max="40" value="4" title="画笔粗细" class="ce-size-range">
+                    <span class="ce-size-val" id="ce-size-val">4</span>
+                  </div>
+                  <span class="flex-spacer"></span>
+                  <span class="ce-tip" id="ce-tip">B 画笔 · E 橡皮 · F 填充 · Ctrl+Z 撤销</span>
+                </div>
+              </div>
+            </div>
+
+            <input type="file" id="file-costume" accept="image/png,image/jpeg,image/gif,image/webp,image/bmp" hidden>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="right-panel">
+        <div class="panel-tabs">
+          <button id="btn-build" class="panel-build" title="构建快应用 RPK 安装包（debug 签名）；JSC 加密构建在左上角「设置」中开启">构建</button>
+          <button id="tab-preview" class="active">预览</button>
+          <button id="tab-code">代码</button>
+          <button id="tab-issue">问题 <span id="issue-count" class="count-badge"></span></button>
+          <button id="btn-panel-hide" class="panel-hide-btn" title="收起面板">‹</button>
+        </div>
+        <div class="panel-body">
+          <div id="panel-preview" class="preview-wrap">
+            <div class="pv-main">
+              <div class="pv-stage-row">
+                <!-- 预览左侧：设备型号 + 网格开关 -->
+                <div class="pv-side">
+                  <span class="pv-side-label">设备</span>
+                  <select id="pv-device-select" class="pv-device-select" title="切换设备型号">
+                    <option value="band9">手环 9</option>
+                    <option value="band9pro">手环 9 Pro</option>
+                    <option value="band10">手环 10</option>
+                    <option value="band10pro">手环 10 Pro</option>
+                  </select>
+                  <button id="pv-grid-toggle" class="pv-grid-btn" type="button" title="显示 / 隐藏网格">#</button>
+                </div>
+                <div class="pv-screen-wrap">
+                  <div id="pv-root"></div>
+                  <div class="pv-grid-overlay" id="pv-grid-overlay" style="display:none"></div>
+                  <div class="pv-coord" id="pv-coord" style="display:none">X 0 · Y 0</div>
+                </div>
+              </div>
+              <div class="pv-zoom" id="pv-zoom">
+                <input class="pv-zoom-range" id="pv-zoom-range" type="range"
+                       min="10" max="200" step="5" value="100" title="预览大小（10% ~ 200%）">
+                <span class="pv-zoom-label" id="pv-zoom-label">100%</span>
+              </div>
+            </div>
+            <div class="pv-under">
+              <button id="btn-new-page" title="添加一个新页面（每页积木独立）">＋ 新建页面</button>
+              <div class="pv-drawer" id="pv-drawer">
+                <div class="pv-drawer-head" id="pv-drawer-head">
+                  <span id="pv-drawer-title">页面列表</span>
+                  <span class="pv-drawer-arrow">▼</span>
+                </div>
+                <div class="pv-drawer-list" id="pv-drawer-list"></div>
+              </div>
+              <button id="btn-run" title="启动应用：从当前页面开始自由互动">▶ 启动</button>
+            </div>
+            <!-- 数据监视框：横向条，位于「启动」按钮下方，可上下收起/展开（展开后其他组件上移） -->
+            <div class="pv-data" id="pv-data">
+              <div class="pv-data-head">
+                <span class="pv-data-title">数据 · 变量 / 列表</span>
+                <button class="pv-data-toggle" id="btn-pv-data" type="button" title="收起数据框">▾</button>
+              </div>
+              <div class="pv-data-body" id="pv-data-body"></div>
+            </div>
+          </div>
+          <pre id="panel-code" style="display:none"><code id="codeView"></code></pre>
+          <div id="panel-issue" style="display:none" class="issue-list">
+            <div id="issueView"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 面板收起/展开按钮：始终是同一个按钮、同一个位置，可上下拖动调整位置 -->
+      <button class="panel-collapse" id="btn-panel" title="收起 / 展开面板（可上下拖动调整位置）">◀</button>
+
+      <!-- 屏幕右侧：角色 / 背景栏（纵向，可收起；拖动卡片可调整顺序 / 层级） -->
+      <div class="sprite-bar" id="sprite-bar">
+        <div class="sprite-bar-head">
+          <div class="sprite-bar-tabs">
+            <button class="sprite-bar-tab active" type="button" data-tab="sprite">角色</button>
+            <button class="sprite-bar-tab" type="button" data-tab="backdrop">背景</button>
+          </div>
+          <button class="sprite-bar-add" id="btn-sprite-add" type="button" title="新建角色">＋</button>
+          <button class="sprite-bar-add" id="btn-sprite-addtext" type="button" title="添加文本角色（内容以文字保存，不占图片体积）">T</button>
+          <span class="flex-spacer"></span>
+          <button class="sprite-bar-toggle" id="btn-sprite-toggle" type="button" title="收起角色/背景栏">▸</button>
+        </div>
+        <!-- 收起状态下显示的迷你图标条：点击切换对象，上下拖动调整顺序 / 图层 -->
+        <div class="sprite-mini-rail" id="sprite-mini-rail"></div>
+        <div class="sprite-bar-body" id="sprite-bar-body">
+          <div class="sprite-strip" id="sprite-strip"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="/static/js/loader.js?v=63"></script>
+  <script src="/static/js/app-info.js?v=1"></script>
+  <script>
+    // 安全的启动机制
+    function startDuckBox() {
+      console.log('🚀 尝试启动 Duck Box 编辑器...');
+      
+      // 检查 DBX_LOADER 是否存在
+      if (typeof DBX_LOADER === 'undefined') {
+        console.error('❌ DBX_LOADER 未定义');
+        showLoadingError('加载器脚本未加载');
+        return;
+      }
+      
+      // 检查 boot 方法是否存在
+      if (typeof DBX_LOADER.boot !== 'function') {
+        console.error('❌ DBX_LOADER.boot 不是函数');
+        showLoadingError('加载器功能不完整');
+        return;
+      }
+      
+      // 开始加载
+      try {
+        DBX_LOADER.boot();
+      } catch (error) {
+        console.error('❌ 启动过程中发生异常:', error);
+        showLoadingError('启动异常: ' + error.message);
+      }
+    }
+    
+    function showLoadingError(message) {
+      document.body.innerHTML = 
+        '<div style="padding:48px;font-family:sans-serif;line-height:1.8;color:#2b2340">' +
+        '<h2>🦆 Duck Box 加载失败</h2>' +
+        '<p><strong>错误：</strong> ' + escapeHtml(message) + '</p>' +
+        '<p><strong>调试信息：</strong></p>' +
+        '<ul>' +
+        '<li>DBX_LOADER类型: ' + typeof DBX_LOADER + '</li>' +
+        '<li>当前URL: ' + window.location.href + '</li>' +
+        '<li>网络状态: ' + (navigator.onLine ? '在线' : '离线') + '</li>' +
+        '</ul>' +
+        '<p><strong>解决方案：</strong></p>' +
+        '<ol><li>刷新页面重试</li>' +
+        '<li>清除浏览器缓存 (Ctrl+F5)</li>' +
+        '<li>检查网络连接</li>' +
+        '<li>重启 Duck Box 应用</li>' +
+        '<li>检查浏览器控制台获取更多错误信息</li></ol>' +
+        '</div>';
+    }
+    
+    function escapeHtml(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    
+    // 多种方式确保启动
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('📄 DOM 已加载，准备启动...');
+      setTimeout(startDuckBox, 200);
+    });
+    
+    // 如果 DOM 已经加载完成，立即启动
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      console.log('🏃 DOM 已就绪，立即启动...');
+      setTimeout(startDuckBox, 100);
+    }
+    
+    // 最后的保险，如果还没启动就强制启动
+    setTimeout(function() {
+      if (typeof DBX_EDITOR === 'undefined') {
+        console.warn('⚠️ 延迟启动 Duck Box...');
+        startDuckBox();
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
