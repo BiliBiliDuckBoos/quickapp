@@ -1,9 +1,0 @@
-<script>
-  /**
-   * 应用入口（由 Duck Box 自动生成）
-   */
-  export default {
-    onCreate() {},
-    onDestroy() {}
-  }
-</script>
